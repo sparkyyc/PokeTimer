@@ -1,0 +1,46 @@
+
+.border {
+  border-bottom:30px solid #222224;
+}
+
+.dot {
+  height: 200px;
+  width: 200px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  position:relative;
+  border: 25px solid #222224;
+  bottom: 100px;
+  left: 25%;
+}
+
+.pokeball-red {
+  background-color: #EE1515
+}
+
+/* .pokeball-size {
+  padding-bottom: 10rem;
+} */
+
+.main-header {
+  color: white;
+  font-size: 65px;
+}
+
+.white-text {
+  color: white;
+}
+
+#welcome-message {
+  background-color: rgba(5,4,2,0.3);
+width:850px;
+height: 100%;
+margin-left:auto;
+margin-right:auto;
+padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
