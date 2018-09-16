@@ -26,7 +26,7 @@
 .main-header {
   color: white;
   font-size: 65px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   font-family: 'Press Start 2P', cursive;
 }
 
@@ -34,19 +34,45 @@
   color: white;
 }
 
+#welcome-message-container {
+  background-color: white;
+}
+
 #welcome-message {
-  background-color: rgba(5,4,2,0.3);
-width:850px;
+/* width:850px; */
+color: #222224;
+text-align: left !important;
 height: 100%;
 margin-left:auto;
 margin-right:auto;
 padding: 10px;
 font-family: 'Anonymous Pro', monospace;
-
 }
 
-.hidden {
+#instructions {
+  color: #222224;
+  text-align: left !important;
+  height: 100%;
+  margin-left:auto;
+  margin-right:auto;
+  padding: 10px;
+  font-family: 'Anonymous Pro', monospace;
+}
+
+.instructions {
+  font-family: 'Anonymous Pro', monospace;
+  color: #222224;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+.hide {
   display: none;
+}
+
+.show {
+  display: block;
 }
 
 .adventure-status-image {
@@ -74,4 +100,34 @@ label {
   margin: 20px;
   font-size: 20px;
   font-family: 'Press Start 2P', cursive;
+}
+
+.close {
+  cursor: pointer;
+  position: relative;
+  top: 50%;
+  right: 100%;
+  padding: 12px 16px;
+  transform: translate(0%, -50%);
+}
+
+#pokedex-section {
+  margin: 0 100px;
+}
+
+.help-button {
+  font-size: 50px;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.logo {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.footer {
+  margin-top: 60px;
 }

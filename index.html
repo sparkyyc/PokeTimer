@@ -7,6 +7,7 @@
   <title>PokeTimer</title>
   <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro:400,400i,700|Press+Start+2P" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <link href="css/styles.css" rel="stylesheet">
   <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 
@@ -15,17 +16,50 @@
 <body>
   <section class="hero pokeball-red pokeball-size border">
     <div class="hero-head">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand logo">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANnSURBVGhD7dhLyIxRHMfx1z3knpBbUZSykQVJrgsL2SG5ZIFYUDbKhlxyi1CuKwuFDbFhYWMjFLlbWCiXFbklJNfvb97513Gc8zzneeZ9vTM1v/r0zjzPnDPvzH/Of84zLc0007hZj6GtNxs3vfEahyr3Gjib8BtfMEwHGjFWDb0QadiqWDVMQ1bFr4ZpuKr41TANVZVYNUy7V2Vp9W+tiVXDtFVVemFh682/cxsLWm+WTl41TK1V6YJLWFu55+UcPmNG5V655FXD1FqVY9A8cyr3vOyETn7ARB0omNRqmLJV2QGbY7QO+FkJe8BLjECRpFbDlKnKOtj4r+iMfzIN7hM9xGCkpGg1TJGqaP3+gI19hGCGwH0SuQl1h7wUrYZJrcpMaP26Y7XYo/kI98E2QF0ilp4oUw1zAFnRetW69cftQzRqwf4AOY5YOuEeQuNSbEAsuo7Reg2NC7Zei1pwaJDaXVb0xRQal+cNtL5i6Yt3CI2djWisBbt+Ygyyou7xBP7YPFuRl10IjR2JaFYgNOgx5iErmxEam2UsYlGl9MaqIfjjoq3X4rdg3xVMgJ/Ygsyj+fxGojW3BM8RGiP6asiMvjdCA13fsB/9oeiLM7YgU7jrbwpuIPQ410XkJvWd1UJVx3ngHCtrN87gl3MsS2brtcRacD1Zg9zonQkNriezkJtQCy7rLe5A+6Lv1WNtIbP1WpYjNLiI69D+yG2R/bARoW1QEWrH6my5mYrQBKlOoStiGY9XCI1Nkdt6LSktOEYfo26w9MBk+DuD6UjtUL4LSM57hCbJ417zT8IL2Lmz6A7LZbhjU+1Fck7gaqJr0BNoTzYfc6ueQsf1UbCN30HY+aPVY/o+Cs0bU+sPJNGMgv6hEG0ztOD1AkPnRZVpt+ii3t65PIuhf0gVcd85bWVkNfSx0mOewc5rI6pjugoNzRuT1Uj+SdkWPA6W7XDPaevjbjh1ZeieT6HL3aTWaynbgrUGLLaLPY3DUNu19IHWRmiOLPdRKIMQmiiPfuXIvHIjeoH2USuqUOu1lG3BnxD7HXkAYpfTKfagcG4hNFmqu9gCvahVOIlatydqHIVTj7vgUr9Lb0Noso40HIWzDKHJOkrh1mupdRfc1gq3XstAhCbsKOdROkegblMPFqGZZv5vWlr+ALXIHOo+55r+AAAAAElFTkSuQmCC">
+        </div>
+        <div class="navbar-brand navbar-end">
+          <div class="navbar-end">
+            <div>
+                <i class="fas fa-question-circle help-button"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
       <div class="container">
         <h1 class="title main-header has-text-centered">
             Poke Timer
             </h1>
       </div>
+
     </div>
-  </div>
-    <p class="white-text has-text-centered" id="welcome-message"> Welcome Pokemon trainer! Each time you use this timer you will be able to go on an adventure to collect a new pokemon or evolve a pokemon you've already collected. You can
-      choose the egg, to hatch a new pokemon, or a pokemon in your pokedex that you found on a previous adventure as your adventure buddy. Each pokemon has a set amount of time they need to evolve. At the end of each timer your new pokemon,
-      evolved pokemon, or time left to evolve will be revealed. You can click on the ? in the top right corner for more info and a reminder of what to do. </p>
-  </div>
+    <div class="columns is-centered">
+      <div class="column is-two-thirds">
+        <div class="notification hide" id="welcome-message-container">
+          <button class="delete"></button>
+          <p class="white-text has-text-centered hide" id="welcome-message">Welcome Pokemon trainer! Each time you use this timer you will be able to go on an adventure to collect a new pokemon or evolve a pokemon you've already
+            collected. In your pokedex below, you can
+            choose the egg to hatch a new pokemon, or a pokemon that you found've collected on a previous adventure as your adventure buddy. Each pokemon has a set amount of time they need to evolve. At the end of each timer your new pokemon,
+            evolved pokemon, or time left to evolve will be revealed. You can click on the ? icon in the top right corner for more info and a refresher of what to do. </p>
+            <h3 class="instructions has-text-centered hide">Instructions</h3>
+            <p class="white-text has-text-centered instrucions hide" id="instructions"> <strong>Timer:</strong><br>
+            You can set the time in the box marked "timer amount". You can set the timer between 5 and 60 minutes.
+            When you are ready hit start. When the timer is running you will have the option to stop the timer, but be warned this will stop your adventure and you won't recieve any rewards.
+            You'll notice there is no pause button either, the point of this timer is to be productive without distractions, or pauses. You only get the reward if you finish a session. <br>
+
+            <strong>Pokedex:</strong><br>
+            On the bottom of the page you will see your pokedex which shows which pokemon you've collected. The spots with numbers are pokemon you've yet to collect. You can choose any of the pokemon you've collected to be your buddy from this list, or the egg icon to collect a new pokemon. When any collected pokemon is clicked you can see it's details in the picture above the pokedex, the currently selected pokemon is your buddy if you wish to start the timer. <br>
+
+            <strong>Pokemon buddy:</strong><br>
+            After you've picked either the egg or a pokemon from the pokedex, this is now your buddy for your adventure. The egg will hatch a new pokemon, while walking with a pokemon will evolve it (unless it is the final or only evolution of the pokemon.) All evolutions have different lengths before it will hatch. You will see the progess in the form of a progress bar at the end of the adventure. <br><br>
+
+            <strong>Please do not clear your local storage as this will clear your pokedex and you will have to start all over.</strong> Unless that's what you want, then go for it.
+            </p>
+        </div>
+      </div>
+    </div>
     <div class="hero-body">
       <div class="columns">
         <div class="column">
@@ -47,12 +81,55 @@
             <img src="http://placekitten.com/g/300/300" alt="Placeholder">
           </figure>
         </div>
-
+      </div>
+    </div>
   </section>
   <span class="dot"></span>
-  <section>
-    
+  <section id="pokedex-section">
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <div class="tile is-child box has-text-centered">
+          <div class="egg">
+            <img src="data:image/png;base64,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">
+          </div>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">1</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">2</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">3</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">4</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">5</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">6</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">7</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">8</p>
+        </div>
+        <div class="tile is-child box has-text-centered">
+          <p class="title">9</p>
+        </div>
+      </div>
+    </div>
   </section>
+  <footer class="footer">
+  <div class="content">
+    <p>
+      <a href="https://icons8.com">Icon pack by Icons8</a>
+    </p>
+  </div>
+</footer>
 </body>
 
 </html>
