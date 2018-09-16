@@ -26,6 +26,8 @@
 .main-header {
   color: white;
   font-size: 65px;
+  margin-bottom: 10px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .white-text {
@@ -39,8 +41,37 @@ height: 100%;
 margin-left:auto;
 margin-right:auto;
 padding: 10px;
+font-family: 'Anonymous Pro', monospace;
+
 }
 
 .hidden {
   display: none;
+}
+
+.adventure-status-image {
+  max-width: 300px;
+}
+
+
+.countdown {
+  margin: 10px;
+  font-size: 55px;
+  font-family: 'Press Start 2P', cursive;
+}
+
+input {
+  margin: 5px;
+  font-size: 15px;
+}
+
+label {
+  font-size: 20px;
+  font-family: 'Anonymous Pro', monospace;
+}
+
+.button {
+  margin: 20px;
+  font-size: 20px;
+  font-family: 'Press Start 2P', cursive;
 }
