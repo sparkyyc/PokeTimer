@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="hero-body">
-      <div class="columns">
+      <div class="columns is-mobile is-multiline is-centered">
         <div class="column">
           <div>
             <h1 class="has-text-centered countdown"> 00:00:00</h1>
@@ -72,58 +72,106 @@
                      min="5" max="60" required />
             </div>
             <div class="has-text-centered">
-              <input type="button" value="Start" class="button is-primary" id="timer-button" />
+              <input type="button" value="Start" class="button start-button" id="timer-button" />
               </div>
           </div>
         </div>
         <div class="column is-one-third">
           <figure class="image is-300x300 adventure-status-image">
-            <img src="http://placekitten.com/g/300/300" alt="Placeholder">
+            <img src="http://placekitten.com/g/300/300" alt="Placeholder" class="status-image"><br>
+            <progress class="progress is-primary hide" value="15" max="60"></progress>
           </figure>
+
         </div>
       </div>
     </div>
   </section>
+
   <span class="dot"></span>
+
+
   <section id="pokedex-section">
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <div class="tile is-child box has-text-centered">
-          <div class="egg">
-            <img src="data:image/png;base64,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">
+    <div class="tabs is-boxed">
+      <ul>
+        <li class="is-active">
+          <a>
+            <span class="pokedex-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAK2SURBVFhH7ZbLbxJRFMYn+o/o/9AYqxtrk27UxPiKmHSnJuIeMeW1MwFkoC7UlsdQNqZabNUSrWLtoDExCi6szybQhQY1ra3UuLBynO8yFyd0iKUMtI3zJV8ml+Ge+8u559w7gilTG11Pu7vJaKuhjREC/hRFw2wCwnZfuGHzuS0F3LHnADMWlIu0arcV8PT5Sgb1QOrZBDQBm9GmA4Q3LCA3FmzUfG5bAJvx/wlotNXQxup6Rwc1azVUa6S3YKNWQ61dbrd7i80XPu4ODj1yBKQFpft+621Rs1aXa0x9voHtrqD0xh9NltLPXtHr2c+U/7LIAuoV+1qNeLVHEBKhJOSbKyTdtnvDnSrSXwHOIcbmU5ns8uzX76R1KwBr10AipgtFSmVyZU9/4oczGB88Ojy8lcFhW5G5O5nsr9qJsB6gTgb+aT5XD1DrmU/z1J8YW1KYIgwQNeePjpS0f7p5T6bDvVbq3Huwer1pjQX1rrR6rgco595RIJYkpyixJ8b4/cPHOfJcSizZ/Fd3Ca5QfBI1xycl705R1/4TZLG66JQ9wD4Oam0EoJx9S97YNUrPPKH7hUn2xDijQqYe58ouMX5L6AtEF9EQHBCZs1idDASqhYONAETGADVRSFeNsSgl2fvpfJHQFwJ/yQF39xyikzY/g+NqBSC2FZnTAmKM3/E+X1wguz+8vK4ZfLiaDKIGH2hqcHRCpq59FrKccba0BlFrujX48j17P57JlpULY7TSxZEbK7r4SO/ZtnQxMoZtxZPDVbv44sBOdg46cQ5OPV9xSMMIyINzY8FGzedqAfWMc1BJHA7rK+wchM5diG1zBKW5cfnF+t0kSs3haEHmHGL0cvUm4QIkMukLj5RQk229i72DZTSE0g9jbFvrqfI1EznmCSXSuLwxEQGNtrqcKVObQILwB1jjZvcRr15nAAAAAElFTkSuQmCC"></span>
+            <span>Pokedex</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <span class="gen1-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAASbSURBVGhD7ZbLjxRVFMYrogSJO3EFJBLixi1RMYAoJpgQER9BzDBGuxsHmsWAiSSEf4BZGBdiotGNLAcdEhcSFz4SZGaiTpxXVU91dz37MT0NOFHmFYdY13PunNakc2qququmetNf8kt3qu4557vPukpXXXUVXeK4ssnbp+z19iuXgCHvgKIB88Aqgf9V+Q7bQFuhKA9QeOcEpnaKA8oA/FbhV7QCxFTgd8A7qOygdMlJHFS2gYHPgb+bjbUK5oBZ+RRzUvqNlfec0gNF/+DMRAE6cQdzU5n4JZ5UNkORL7jicQI1PhN7lIeobDyChFth1G9wBTcC6MS3WJPKR5Mc+QTNN4BOfBPLTCSxbPzA5UQ22hOM/EkucZKAhxNkpzVB7x8D7nJJkwQ83PFeVB4lW+GF08cl7ATg5ROyFU4wbTuByB+puEAv3l5lO9kLFgQNNCfpNDALl8ne+sJLFvQY7ylsok4BHSiFugDC5/xZLkFYVg9tEYPvp0Tqvax4/tgJSbovK5/hOy4mLDCwT5NNf0FPL3HBYbj92uOiN90nnnnpGMvbmdOyDRcbkotk01/Qy+tMYCCrhx4WPak186/0ZsSPP4+IpeVlyU/Do+J4OivfYQexLZcjCPD2Fdn0FzRSueAgcIk0zP91b0E0697Cgjh6Mi3bXDv/LpsjCFgd02TTX9CBeS44CFznaA5HHnXrl9/Eyz1pyfCvY/LZDzeHZZtM31k2RxDQgbtk01/7Dx+VRVoFNyv+Li+vSLON0UZwVlCLS0trbV996793rYDeyKa/9h15nQ0OIokOoDey6S93tvZnZe62aJVU/weyCG5YFC4b7ASaHx37XT7D5YVt0v0X2BxBlGbn5smmv5xKrcgFB3F1cEiaezNzVm7YZuGzN1JnZJur14bYHEHY1VqBbPrLcMsjXHAQbrUmek73S4M46t/fvCWXzMLikhz5hvne7Dnhzs6yOYIwStVhsumvGcu9zgWHQcsXpUE0ytGbPS/bcLFBlAHwNkQ2/ZUznVN2ub0RQnB0vxz8Wq7zF2CzIplzF+SyaXfkEatcFTmr8g7Z9Bcs1wdzlrPIJekk6Am9kc31pRnWaJRZiBsLvGimM0L2gqWbpaemCqZXrtXZhElSAg9Tecubcd09ZC+cNMPWZkyXTZokOfCgWs4k2QovzTCemNANT7dLbOIkwNoTefOfQqG+m2y1Jji2rozrhpjBTiS6nOpwZJaErG04H5Gd9gSbJ4eJ1KINx+AcUyxeHKihGrY0D0f6BNloX6paf2S66NQwIZJ3ynJjccWjgDkx97huyjpYUxViM9mIJl2vbpsu2PVGJ2BvyCm2KjUoHqUzdZkDlqrM2cgPMzCHNal8PBqrVrdqpq01ijSATYZTLUfPhK+lA3ciuDWKtSN4DfyPz/CdAW2wLcZMQmxzPjxxbNveQmXjFxxrH+PJ0Fw4KpgzZ7kfUpmNFR6xquFMcUbaAUdd12u7KH1ywi82Xjvgq32fM7YeGIPXg5a/sBshvGTBtyIFhr6DmSlPFsyVcb3o/W+46E3lzRV8Bxv2Bt4qQ1/Muuqqq3WkKP8CpoqXsFY0GwoAAAAASUVORK5CYII="></span>
+            <span>Gen 1</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <span class="gen2-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATeSURBVGhD7ZhLbBtFGMctHhUqHHupBMqjhQM5IMWiBSEkOCBQVVqJguuGBtT0IZo2pYEeECBV4hSJEgmo3TyORaIqJIgDpQceIjSJgIgkjh9re19+xzxCY8eOANXD903HQK1vs2t741z8l36ytZ75f/+dnZmdxNFUU03ZoMvs9hbv8iNt3tybrd78WJsnHwCWWj25vxD+3Zvz89+gDbZ1nGW3id4bp22e4n1t3vwAhErBJ6sKTy4JnwPb3y/cK+wapweGc1ug+AiM7p+3hKoB4XEBPYX9+gqKdcGU+P3/Ieyg1ZP/FT67RBn79eBltgmKjFYWth1Pfsg5zO4UZe3R1mG2GebsFbLgOgDT6gusKcrXJxz5Rob/F0/+c1ueREOmjREwnUSM2jR09NVz7HEHM4MsbgHKq5LRo6cGRJzqdPb4YHvmqa03KNNKqHBWoLwqwQxv9b7bImJZ19UDe+YpQwoqnBUoL4ovD+yeE7Gs6Z3+9x4qPHk3aUZBhbMC5UWBWd4+Pdgh4plrvNs9QRkZQYWzAuVlxGfd+78T8UwEhyxxTiGLbhRwGIxbOgC2DC0/ShlY5vwfrOPMp6zT3c927HJxOt2v8Wv4G9nHKheu7xAxjYXHXbKzBbYPxpjT1cd2Pr2XxOk6xdtQfa3Q7s29IWIaC14e41RnM9rPLzHn8yd50D0HD7Nvvp9ihWKR8+3kNHuh57i4iT7elvIwA/6e+ETENBb+4UF1NgOnSDn8cg4WaIVy+Tx79sUe3qbjzBjpYQackRZETGPBE1iiOpuB8xzD4cijrv3wE9vd1cOZ/HGGX/t6YpK36XS/TnpY4DcR01g7n9nHi9RKsbjKw5ZHG8GnglopFG5pWzWQTcQ01mO7nqM7W2Q9bwCziZjGiqUz15OLv7BqOdh7mhfBBYvCaYM3geGnZ37m13B6YZvu3n7Sw4x4enFJxDSWnsxEqc5mjF68xMO5DvfyBVspvLbv0Cu8zchHl0gPM7RUJiJiGkuOJaaozmboyTRzHTnBA+KofzVxjU+Z/EqBj3w5vPvYSaan0qSHGXI8NSliGiukxsapzlbwhcI8IAalcB/r422ovmYkAMg2JmIaK6joR7REbSOE4OiOXPyYz/Mn9u7nvHSin0+bWkceURMpFlSTL4uYxoLpekdQ1Vcok40EM2E2EXNtBWR1up6nYDcqZAko+pSIZy5JiT/siyilRCZLGjaSOGTwhdVSKBZzinjWFJC1QEiJkaaNJAgZ/Ko+L2JZV0CW75+T5JKkxUnjRoC158LKjUgku03Eqk6wbX04K8kshDfR0OmUhS0zznhtWR8UcWoTLJ4gGvmjGoulF4li9qJDDb+s8fCwpVf33whKfn/2noWonkFDJKwn+MKiitcDeqL3rKTwOljTz9gmEaM+SVJqy0JEy5ZvAtYGf8RqMgPF67mZLPeAqco9y/7wBBaxpihvj2ZSqc0BRQuUi5SBRYaPmo+eAm9LPZXBUyO7uQXfBL/jNfxNhjbYFvvMQ99KP9xxNE27S5S1X7CtfYA7Q2XhekHPoBo7J8qsr3CL9cu6jwpSCzjqkpRpE/aNE76x8dgBb+2/qWBrgX3weFD1G3Y9hIcseFccgkBX4ckk5iPK6qwULf0XOFryhZVV/A0W7BU8VVo+mDXVVFNryOH4B5MzXubq3K6JAAAAAElFTkSuQmCC"></span>
+            <span>Gen 2</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <span class="gen3-icon"><img src="data:image/png;base64,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"></span>
+            <span>Gen 3</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div id="pokedex-tab" class="tab-content current">
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <div class="tile is-child box has-text-centered">
+            <div class="egg">
+              <img src="data:image/png;base64,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">
+            </div>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">1</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">2</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">3</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">4</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">5</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">6</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">7</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">8</p>
+          </div>
+          <div class="tile is-child box has-text-centered">
+            <p class="title">9</p>
           </div>
         </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">1</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">2</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">3</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">4</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">5</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">6</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">7</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">8</p>
-        </div>
-        <div class="tile is-child box has-text-centered">
-          <p class="title">9</p>
-        </div>
-      </div>
     </div>
+  </div>
+
+  <div id="gen1-tab" class="tab-content">
+  </div>
+
+  <div id="gen2-tab" class="tab-content">
+  </div>
+
+  <div id="gen3-tab" class="tab-content">
+  </div>
+
   </section>
   <footer class="footer">
+    <div>
+      <p>Created by: Christa</p>
+    </div>
   <div class="content">
     <p>
       <a href="https://icons8.com">Icon pack by Icons8</a>

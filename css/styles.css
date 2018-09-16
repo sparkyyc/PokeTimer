@@ -15,6 +15,10 @@
   left: 25%;
 }
 
+.hero-body {
+  padding-bottom: 25px;
+}
+
 .pokeball-red {
   background-color: #EE1515
 }
@@ -25,8 +29,8 @@
 
 .main-header {
   color: white;
-  font-size: 65px;
-  margin-bottom: 30px;
+  font-size: 50px;
+  margin-bottom: 5px;
   font-family: 'Press Start 2P', cursive;
 }
 
@@ -79,9 +83,12 @@ font-family: 'Anonymous Pro', monospace;
   max-width: 300px;
 }
 
+.status-image {
+  padding-bottom: 30px;
+}
 
 .countdown {
-  margin: 10px;
+  margin-bottom: 10px;
   font-size: 55px;
   font-family: 'Press Start 2P', cursive;
 }
@@ -96,7 +103,17 @@ label {
   font-family: 'Anonymous Pro', monospace;
 }
 
-.button {
+.start-button {
+  color: white;
+  background-color: #00d1b2;
+  margin: 20px;
+  font-size: 20px;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.stop-button {
+  color: #222224;
+  background-color: rgb(247, 218, 25);
   margin: 20px;
   font-size: 20px;
   font-family: 'Press Start 2P', cursive;
@@ -131,3 +148,11 @@ label {
 .footer {
   margin-top: 60px;
 }
+
+.tab-content{
+			display: none;
+}
+
+.tab-content.current{
+			display: inherit;
+		}
