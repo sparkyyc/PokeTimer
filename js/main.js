@@ -1,9 +1,55 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // welcome message and instruction close and open
+  let closeButton = document.getElementById('delete-button')
+  let messages = document.getElementById('message-container')
+  closeButton.addEventListener('click', () => {
+    messages.classList.add('hide')
+  })
+  let instructionButton = document.getElementById('instruction-button')
+  instructionButton.addEventListener('click', () => {
+    messages.classList.remove('hide')
+  })
   // pokedex
   createPokedex(totalPokemon, pokedexDisplay, 0)
-  createPokedex(gen1Total, gen1Display, totalPokemon)
+  createPokedex(gen1Total, gen1Display, 0)
   createPokedex(gen2Total, gen2Display, gen1Total)
   createPokedex(gen3Total, gen3Display, gen2Total)
+  // pokedex tabs
+  let allTabContent = document.getElementsByClassName('tab-content')
+  let allTabs = document.querySelector('tabs')
+  let pokedexTab = document.getElementById('pokedex-tab')
+  let gen1Tab = document.getElementById('gen1-tab')
+  let gen2Tab = document.getElementById('gen2-tab')
+  let gen3Tab = document.getElementById('gen3-tab')
+  let pokedexTabContent = document.getElementById('pokedex-tab-content')
+  let gen1TabContent = document.getElementById('gen1-tab-content')
+  let gen2TabContent = document.getElementById('gen2-tab-content')
+  let gen3TabContent = document.getElementById('gen3-tab-content')
+  pokedexTab.addEventListener('click', () => {
+    closeTab()
+    removeActive()
+    pokedexTabContent.classList.add('current')
+    pokedexTab.classList.add('is-active')
+  })
+  gen1Tab.addEventListener('click', () => {
+    closeTab()
+    removeActive()
+    gen1TabContent.classList.add('current')
+    gen1Tab.classList.add('is-active')
+  })
+  gen2Tab.addEventListener('click', () => {
+    closeTab()
+    removeActive()
+    gen2TabContent.classList.add('current')
+    gen2Tab.classList.add('is-active')
+  })
+  gen3Tab.addEventListener('click', () => {
+    closeTab()
+    removeActive()
+    gen3TabContent.classList.add('current')
+    gen3Tab.classList.add('is-active')
+  })
+
   // Timer
   let timerButton = document.getElementById('timer-button')
   let timerAmount = document.getElementById('timer-amount')
@@ -93,10 +139,10 @@ function appendTimer(timer, display) {
 }
 
 // Pokedex
-let pokedexDisplay = document.getElementById('pokedex-tab')
-let gen1Display = document.getElementById('gen1-tab')
-let gen2Display = document.getElementById('gen2-tab')
-let gen3Display = document.getElementById('gen3-tab')
+let pokedexDisplay = document.getElementById('pokedex-tab-content')
+let gen1Display = document.getElementById('gen1-tab-content')
+let gen2Display = document.getElementById('gen2-tab-content')
+let gen3Display = document.getElementById('gen3-tab-content')
 
 let gen1Total = 151
 let gen2Total = 251
@@ -129,7 +175,7 @@ let createPokedex = function(whichGen, display, i) {
   // append egg image to egg div
   eggDiv.appendChild(eggImage)
   // for loop for 151 pokemon
-  for (i; i <= whichGen; i++) {
+  for (i = i + 1; i <= whichGen; i++) {
     // create child div
     let childDiv = document.createElement('div')
     childDiv.classList.add('column')
@@ -144,5 +190,21 @@ let createPokedex = function(whichGen, display, i) {
     pokeNumber.innerText = i
     // append paragraph element to child div
     childDiv.appendChild(pokeNumber)
+  }
+}
+
+// pokedex tabs
+function closeTab() {
+  let allTabContent = document.getElementsByClassName('tab-content')
+  console.log(allTabContent)
+  for (let i = 0; i < allTabContent.length; i++) {
+    allTabContent[i].classList.remove('current')
+  }
+}
+function removeActive() {
+  let allTabs = document.getElementsByClassName('tab')
+  console.log(allTabs)
+  for (let i = 0; i < allTabs.length; i++) {
+    allTabs[i].classList.remove('is-active')
   }
 }

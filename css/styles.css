@@ -38,7 +38,7 @@
   color: white;
 }
 
-#welcome-message-container {
+#message-container {
   background-color: white;
 }
 
@@ -137,6 +137,7 @@ label {
   margin-top: 20px;
   margin-right: 20px;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .logo {
