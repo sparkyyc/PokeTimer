@@ -156,3 +156,7 @@ label {
 .tab-content.current{
 			display: inherit;
 		}
+
+.is-parent {
+  flex-wrap: wrap;
+}
