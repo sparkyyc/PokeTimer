@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-
+randomPokemonGenerator()
 })
 
 
@@ -241,7 +241,7 @@ function getAllPokemon() {
 
 function getEvolutions() {
   let interval = {
-    limit: 100,
+    limit: 202,
   }
   P.getEvolutionChainsList(interval)
     .then(function(response) {
@@ -252,7 +252,7 @@ function getEvolutions() {
 
 function getSpecies() {
   let interval = {
-    limit: 100,
+    limit: 386,
   }
   P.getPokemonSpeciesList(interval)
     .then(function(response) {
@@ -302,12 +302,15 @@ function loadStorage() {
 
 // function to get random number
 function randomNumber() {
-  return Math.floor(Math.random() * 386)
+  return Math.floor(Math.random() * 202)
 }
 // function to check object equality
-function checkObjectEquality(collectedArr, pokedex, pickedNumber) {
+function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
+  if(collectedArr.length !== 0) {
+    return false
+  }
   for (let i = 0; i < collectedArr.length; i++) {
-    if (collectedArr[i].name === pokedex[pickedNumber].name) {
+    if (collectedArr[i].url === firstStage[pickedNumber].url) {
       return true
     }
   }
@@ -315,13 +318,12 @@ function checkObjectEquality(collectedArr, pokedex, pickedNumber) {
 }
 // function to get random pokemon
 function randomPokemonGenerator() {
-  let pokedex = getStorage('pokedexStorage')
+  let firstStage = getStorage('evolutionStorage')
   let collected = getStorage('pokemonCollected')
-  // let pickedNumber = randomNumber()
-  let pickedNumber = 6
-  while (checkObjectEquality(collected, pokedex, pickedNumber)) {
+  let pickedNumber = randomNumber()
+  while (checkObjectEquality(collected, firstStage, pickedNumber)) {
     pickedNumber = randomNumber()
   }
-  collected.push(pokedex[pickedNumber])
+  collected.push(firstStage[pickedNumber])
   setStorage('pokemonCollected', collected)
 }
