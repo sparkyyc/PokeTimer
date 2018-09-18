@@ -263,7 +263,7 @@ function getSpecies() {
 
 // parse response
 
-// local storage
+//  local storage
 //first get storage to use in app or if none set it
 // create function to set storage with params
 function getStorage(label) {
@@ -300,4 +300,28 @@ function loadStorage() {
   }
 }
 
+// function to get random number
+function randomNumber() {
+  return Math.floor(Math.random() * 386)
+}
+// function to check object equality
+function checkObjectEquality(collectedArr, pokedex, pickedNumber) {
+  for (let i = 0; i < collectedArr.length; i++) {
+    if (collectedArr[i].name === pokedex[pickedNumber].name) {
+      return true
+    }
+  }
+  return false
+}
 // function to get random pokemon
+function randomPokemonGenerator() {
+  let pokedex = getStorage('pokedexStorage')
+  let collected = getStorage('pokemonCollected')
+  // let pickedNumber = randomNumber()
+  let pickedNumber = 6
+  while (checkObjectEquality(collected, pokedex, pickedNumber)) {
+    pickedNumber = randomNumber()
+  }
+  collected.push(pokedex[pickedNumber])
+  setStorage('pokemonCollected', collected)
+}
