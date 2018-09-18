@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
   // welcome message and instruction close and open
   let closeButton = document.getElementById('delete-button')
@@ -81,6 +83,28 @@ document.addEventListener('DOMContentLoaded', () => {
       timerButton.value = 'Stop'
     }
   })
+
+  // get Pokemon
+  P.getEvolutionChainById(2)
+   .then(function(response) {
+     console.log(response);
+   });
+    P.getPokemonSpeciesByName('2')
+    .then(function(response) {
+      console.log(response);
+    });
+  // P.getPokemonByName('eevee') // with Promise
+  //   .then(function(response) {
+  //     console.log(response);
+  //   });
+  // let pokeURL = 'https://pokeapi.co/'
+  // axios.get(`${pokeURL}api/v2/pokemon/1/`)
+  //   .then(function (response) {
+  //     console.log(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   })
 })
 
 
@@ -154,14 +178,17 @@ let createPokedex = function(whichGen, display, i) {
   let ancestor = document.createElement('div')
   ancestor.classList.add('columns')
   ancestor.classList.add('is-multiline')
+  ancestor.classList.add('is-mobile')
   // append ancestor div to display
   display.appendChild(ancestor)
   // create child div for egg
   let eggChild = document.createElement('div')
   eggChild.classList.add('column')
-  eggChild.classList.add('is-2')
+  // eggChild.classList.add('is-2')
+  eggChild.classList.add('pokedex-entry')
   eggChild.classList.add('box')
   eggChild.classList.add('has-text-centered')
+  eggChild.classList.add('is-one-third-mobile')
   // append child egg div to ancestor
   ancestor.appendChild(eggChild)
   // create div for egg
@@ -179,7 +206,9 @@ let createPokedex = function(whichGen, display, i) {
     // create child div
     let childDiv = document.createElement('div')
     childDiv.classList.add('column')
-    childDiv.classList.add('is-2')
+    childDiv.classList.add('is-one-third-mobile')
+    // childDiv.classList.add('is-2')
+    childDiv.classList.add('pokedex-entry')
     childDiv.classList.add('box')
     childDiv.classList.add('has-text-centered')
     // append child div to ancestor
@@ -208,3 +237,5 @@ function removeActive() {
     allTabs[i].classList.remove('is-active')
   }
 }
+
+// Get random pokemon
