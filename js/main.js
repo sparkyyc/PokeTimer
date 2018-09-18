@@ -1,63 +1,17 @@
-// local storage
-//first get storage to use in app or if none set it
-// create function to set storage with params
-function getStorage(label) {
-  JSON.parse(localStorage.getItem(`${label}`))
-}
-// JSON.parse(localStorage.getItem('visitedSite'))
-// {
-//   visitedSite: false,
-//   pokedexStorage: [],
-//   evolutionStorage: [],
-//   speciesStorage: [],
-//   pokemonCollected: [],
-// };
-// then set storage when event triggered
-function setStorage(label, value) {
-  localStorage.setItem(`${label}`, JSON.stringify(value))
-}
-// function setVisitedSite() {
-//   localStorage.setItem('visitedSite', JSON.stringify(true))
-// }
-// function to load storage items if they exist and set them if they don't
-function loadStorage() {
-  if (getStorage(visitedSite) === undefined) {
-    return
-  } else {
-    setStorage(visitedSite, false)
-  }
-
-  if (pokedexStorage) {
-    getStorage(pokedexStorage)
-  }
-
-  if (evolutionStorage) {
-    getStorage(evolutionStorage)
-  }
-
-  if (speciesStorage) {
-    getStorage(speciesStorage)
-  }
-
-  if (pokemonCollected) {
-    getStorage(pokemonCollected)
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Get local storage
+  // Get/set local storage
   loadStorage()
   // welcome message and instruction close and open
   let closeButton = document.getElementById('delete-button')
   let messages = document.getElementById('message-container')
   // if visited site before(true) hide welcome message/Instructions
-  if (visitedSite === true) {
+  if (JSON.parse(localStorage.getItem('visitedSite')) === true) {
     messages.classList.add('hide')
   }
   // when close button clicked close message/instructions
   closeButton.addEventListener('click', () => {
     messages.classList.add('hide')
-    setStorage(visitedSite, true)
+    setStorage('visitedSite', true)
   })
   let instructionButton = document.getElementById('instruction-button')
   instructionButton.addEventListener('click', () => {
@@ -136,60 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  // get Pokemon
-  function getAllPokemon() {
-    let interval = {
-    limit: 386,
-  }
-  P.getPokemonsList(interval)
-    .then(function(response) {
-      let allPokemon = parsePokedex(response)
-      setStoragePokedex(allPokemon)
-    })
 
-  }
-
-  function getEvolutions() {
-    let interval = {
-    limit: 386,
-  }
-  P.getEvolutionChainsList(interval)
-    .then(function(response) {
-      let pokemonEvolution = parseEvolution(response);
-    })
-    setStorageEvolutions(allPokemon)
-  }
-
-  function getSpecies() {
-    let interval = {
-    limit: 386,
-  }
-  P.getPokemonSpeciesList(interval)
-    .then(function(response) {
-      let pokemonSpecies = parseSpecies(response);
-    })
-    setStorageSpecies(allPokemon)
-  }
-  // P.getEvolutionChainById(2)
-  //  .then(function(response) {
-  //    console.log(response);
-  //  });
-  //   P.getPokemonSpeciesByName('2')
-  //   .then(function(response) {
-  //     console.log(response);
-  //   });
-  // P.getPokemonByName('eevee') // with Promise
-  //   .then(function(response) {
-  //     console.log(response);
-  //   });
-  // let pokeURL = 'https://pokeapi.co/'
-  // axios.get(`${pokeURL}api/v2/pokemon/1/`)
-  //   .then(function (response) {
-  //     console.log(response);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   })
 })
 
 
@@ -315,6 +216,7 @@ function closeTab() {
     allTabContent[i].classList.remove('current')
   }
 }
+
 function removeActive() {
   let allTabs = document.getElementsByClassName('tab')
   console.log(allTabs)
@@ -323,4 +225,79 @@ function removeActive() {
   }
 }
 
-// Get random pokemon
+// get Pokemon
+function getAllPokemon() {
+  let interval = {
+    limit: 386,
+  }
+  P.getPokemonsList(interval)
+    .then(function(response) {
+      // let allPokemon = parsePokedex(response)
+      console.log(response.results)
+      setStorage('pokedexStorage', response.results)
+    })
+
+}
+
+function getEvolutions() {
+  let interval = {
+    limit: 100,
+  }
+  P.getEvolutionChainsList(interval)
+    .then(function(response) {
+      // let pokemonEvolution = parseEvolution(response)
+      setStorage('evolutionStorage', response.results)
+    })
+}
+
+function getSpecies() {
+  let interval = {
+    limit: 100,
+  }
+  P.getPokemonSpeciesList(interval)
+    .then(function(response) {
+      // let pokemonSpecies = parseSpecies(response)
+      setStorage('speciesStorage', response.results)
+    })
+}
+
+// parse response
+
+// local storage
+//first get storage to use in app or if none set it
+// create function to set storage with params
+function getStorage(label) {
+  return JSON.parse(localStorage.getItem(label))
+}
+// then set storage when event triggered
+function setStorage(label, value) {
+  localStorage.setItem(label, JSON.stringify(value))
+}
+
+// localStorage.setItem(`visitedSite`, JSON.stringify(false))
+// function setVisitedSite() {
+//   localStorage.setItem('visitedSite', JSON.stringify(true))
+// }
+// function to load storage items if they exist and set them if they don't
+
+function loadStorage() {
+  if (!getStorage('pokedexStorage')) {
+    getAllPokemon()
+  } else {
+    console.log('got it!')
+  }
+
+  if (!getStorage('evolutionStorage')) {
+    getEvolutions()
+  }
+
+  if (!getStorage('speciesStorage')) {
+    getSpecies()
+  }
+
+  if (!getStorage('pokemonCollected')) {
+    setStorage('pokemonCollected', [])
+  }
+}
+
+// function to get random pokemon
