@@ -132,6 +132,22 @@ label {
   margin: 0 100px;
 }
 
+.pokedex-entry {
+  flex-basis: 10%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pokedex-entry p {
+
+}
+
+.pokedex-entry img {
+  min-width: 50px;
+}
+
 .help-button {
   font-size: 50px;
   margin-top: 20px;
@@ -156,6 +172,7 @@ label {
 
 .tab-content.current{
 			display: inherit;
+      font-family: 'Press Start 2P', cursive;
 		}
 
 .is-parent {

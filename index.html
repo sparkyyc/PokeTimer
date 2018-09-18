@@ -143,6 +143,15 @@
     </p>
   </div>
 </footer>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/pokeapi-js-wrapper/dist/index.js"></script>
+<script> const options = {
+  protocol: 'https',
+  versionPath: '/api/v2/',
+  cache: true,
+  timeout: 5 * 1000 // 5s
+}; </script>
+<script> const P = new Pokedex.Pokedex(options); </script>
 <script src="js/main.js"></script>
 </body>
 
