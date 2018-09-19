@@ -144,7 +144,7 @@ label {
 
 }
 
-.pokedex-entry img {
+.egg {
   min-width: 50px;
 }
 
@@ -177,4 +177,9 @@ label {
 
 .is-parent {
   flex-wrap: wrap;
+}
+
+.sprite {
+  min-height: 125px;
+  min-width: 125px;
 }
