@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-randomPokemonGenerator()
+
 })
 
 
@@ -128,6 +128,7 @@ function AdjustingTimer(doThisFunc, duration, display, errorFunc) {
     doThisFunc(timer, countdownScreen)
     timer--
     if (timer < 0) {
+      randomPokemonGenerator()
       return
     }
     expected += that.interval
@@ -298,6 +299,10 @@ function loadStorage() {
   if (!getStorage('pokemonCollected')) {
     setStorage('pokemonCollected', [])
   }
+
+  if (!getStorage('pokemonEvosCollected')) {
+    setStorage('pokemonEvosCollected', [])
+  }
 }
 
 // function to get random number
@@ -319,11 +324,25 @@ function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
 // function to get random pokemon
 function randomPokemonGenerator() {
   let firstStage = getStorage('evolutionStorage')
+  let collectedEvos = getStorage('pokemonEvosCollected')
   let collected = getStorage('pokemonCollected')
   let pickedNumber = randomNumber()
-  while (checkObjectEquality(collected, firstStage, pickedNumber)) {
+  while (checkObjectEquality(collectedEvos, firstStage, pickedNumber)) {
     pickedNumber = randomNumber()
   }
-  collected.push(firstStage[pickedNumber])
-  setStorage('pokemonCollected', collected)
+  console.log(firstStage)
+  let newPokemon = firstStage[pickedNumber]
+  console.log(newPokemon)
+  collectedEvos.push(newPokemon)
+  setStorage('pokemonEvosCollected', collectedEvos)
+  parseEvolution(newPokemon, collected)
+}
+
+function parseEvolution(newPokemon, collected) {
+  axios.get(newPokemon.url)
+  .then(function (response) {
+    console.log(response.data)
+    collected.push(response.data)
+    setStorage('pokemonCollected', collected)
+  })
 }
