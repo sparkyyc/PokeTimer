@@ -79,7 +79,7 @@ font-family: 'Anonymous Pro', monospace;
   display: block;
 }
 
-.adventure-status-image {
+.adventure-status {
   max-width: 300px;
 }
 
@@ -182,4 +182,21 @@ label {
 .sprite {
   min-height: 125px;
   min-width: 125px;
+}
+
+.adventure-status-image {
+  max-height: 200px;
+  max-width: 200px;
+  padding-bottom: 30px;
+}
+
+.status-name {
+  margin-right: 30%;
+  padding-bottom: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .status-name {
+    margin-right: 0;
+  }
 }

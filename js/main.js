@@ -91,6 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
+  // Click on collected pokemon in pokedex
+  let picked;
+  let pokedex = document.getElementById('pokedex-section')
+  let status = document.getElementById('adventure-status-image')
+  pokedex.addEventListener('click', (event) => {
+    if (event.target.classList.contains('collected')) {
+      status.src = event.target.src
+      picked = event.target.id
+    } else if ( event.target.classList.contains('egg')) {
+      status.src = 'pokemon_Egg.png'
+      picked = 'egg'
+    }
+  })
+
 })
 
 
@@ -367,6 +381,8 @@ function fillPokedexRando() {
         let pokeImg = document.createElement('img')
         pokeImg.setAttribute('src', sprite)
         pokeImg.classList.add('sprite')
+        pokeImg.classList.add('collected')
+        pokeImg.setAttribute('id', name)
         spot[i].appendChild(pokeImg)
       }
     })
@@ -392,9 +408,16 @@ function fillPokedexCollected() {
             let pokeImg = document.createElement('img')
             pokeImg.setAttribute('src', sprite)
             pokeImg.classList.add('sprite')
+            pokeImg.classList.add('collected')
+            pokeImg.setAttribute('id', name)
             spot[j].appendChild(pokeImg)
           }
         })
     }
   }
+}
+
+// evolve - what to do when
+function evolve() {
+  //
 }
