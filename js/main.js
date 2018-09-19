@@ -84,15 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (timerAmount.value === '') {
       return console.log('Error')
     }
+
+    let statusInfo = document.getElementById('status-name')
+    picked = statusInfo.dataset.statusName
+    chainNum =  statusInfo.dataset.statusId
     // set ticker object & duration to seconds
     let duration = timerAmount.value * 60
     ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked, chainNum)
     // if button is start button
     if (timerButton.classList.contains('start-button')) {
+
+      console.log(picked)
       ticker.start()
       timerButton.classList.remove('start-button')
       timerButton.classList.add('stop-button')
       timerButton.value = 'Stop'
+
     }
   })
 
@@ -106,12 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
       picked = event.target.id
       chainNum = event.target.dataset.chainId
       statusName.innerText = picked
+      statusName.setAttribute('data-status-id', chainNum)
+      statusName.setAttribute('data-status-name', picked)
     } else if (event.target.classList.contains('egg')) {
       status.src = 'pokemon_Egg.png'
       picked = 'egg'
       statusName.innerText = 'New Pokemon'
+      statusName.setAttribute('data-status-id', chainNum)
+      statusName.setAttribute('data-status-name', 'egg')
     }
   })
+
+
 
 })
 
@@ -150,19 +163,18 @@ function AdjustingTimer(doThisFunc, duration, display, picked, chainNum) {
     doThisFunc(timer, countdownScreen)
     timer--
     if (timer < 0) {
+      console.log(picked)
       if (picked === 'egg') {
-        randomPokemonGenerator()
-
+        randomPokemonGenerator(picked, chainNum)
       } else {
         evolve(chainNum, picked)
-
       }
       let timerButton = document.getElementById('timer-button')
       timerButton.classList.remove('stop-button')
       timerButton.classList.add('start-button')
       timerButton.value = 'Start'
-      return
 
+      return
     }
     expected += that.interval
     timeout = setTimeout(step, Math.max(0, that.interval - drift))
@@ -363,7 +375,7 @@ function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
   return false
 }
 // function to get random pokemon
-function randomPokemonGenerator() {
+function randomPokemonGenerator(picked, chainNum) {
   console.log('Getting encounter')
   let firstStage = getStorage('evolutionStorage')
   let collectedEvos = getStorage('pokemonEvosCollected')
@@ -375,21 +387,21 @@ function randomPokemonGenerator() {
   let newPokemon = firstStage[pickedNumber]
   collectedEvos.push(newPokemon)
   setStorage('pokemonEvosCollected', collectedEvos)
-  parseFound(newPokemon, collected)
-
+  parseFound(newPokemon, collected, picked, chainNum)
 }
 
-function parseFound(newPokemon, collected) {
+function parseFound(newPokemon, collected, picked ,chainNum) {
   axios.get(newPokemon.url)
     .then(function(response) {
       collected.push(response.data)
       setStorage('pokemonCollected', collected)
-      fillPokedexRando()
+      fillPokedexRando(picked, chainNum)
     })
+    return picked, chainNum
 }
 
 // function to append sprite to pokedex
-function fillPokedexRando() {
+function fillPokedexRando(picked,chainNum) {
   // from pokemonCollected get name from last array element, obj.chain.species.name
   let collected = getStorage('pokemonCollected')
   let name = collected[collected.length - 1].chain.species.name
@@ -422,6 +434,17 @@ function fillPokedexRando() {
       }
       spritesStorage.push(spriteObj)
       setStorage('sprites', spritesStorage)
+
+      let status = document.getElementById('adventure-status-image')
+      let statusName = document.getElementById('status-name')
+      status.src = sprite
+      statusName.innerText = name
+      statusName.setAttribute('data-status-id', chainId)
+      statusName.setAttribute('data-status-name', name)
+      // picked = name
+      // chainNum = chainId
+      // console.log(picked, chainNum)
+      // picked, chainNum
     })
 }
 
@@ -515,7 +538,80 @@ function parseEvolution(evolve, collectedEvos) {
   P.getPokemonByName(evolve)
     .then(function(response) {
       collectedEvos.push(response)
+      // console.log(collectedEvos)
       setStorage('pokemonEvolutionDataCollected', collectedEvos)
-      fillPokedexRando()
+      fillPokedexEvo()
     })
+}
+
+function fillPokedexEvo(picked, chainNum) {
+  // from pokemonCollected get name from last array element, obj.chain.species.name
+  // get pokemon using getpokemonbyname and name from above
+
+  let collected = getStorage('pokemonCollected')
+  let spriteStorage = getStorage('sprites')
+  let evolutionData = getStorage('pokemonEvolutionDataCollected')
+
+      let name = evolutionData.name
+      let chainId = chainNum
+      // get sprite wanted from storage
+      let sprite = evolutionData[evolutionData.length -1].sprites.front_default
+      // find pokedex number
+      let pokedexNumber =evolutionData[evolutionData.length -1].id
+      // create and append image to pokedex spot
+      let spot = document.getElementsByClassName(`${pokedexNumber}`)
+      // console.log(spot.length)
+      for (let j = 0; j < spot.length; j++) {
+        spot[j].removeChild(spot[j].childNodes[0])
+        let pokeImg = document.createElement('img')
+        pokeImg.setAttribute('src', sprite)
+        pokeImg.classList.add('sprite')
+        pokeImg.setAttribute('data-chain-id', chainId)
+        pokeImg.classList.add('collected')
+        pokeImg.setAttribute('id', name)
+        spot[j].appendChild(pokeImg)
+      }
+      let spriteObj = {
+        sprite: sprite,
+        pokedexNumber: pokedexNumber,
+      }
+
+      spritesStorage.push(spriteObj)
+      setStorage('sprites', spritesStorage)
+
+      let status = document.getElementById('adventure-status-image')
+      let statusName = document.getElementById('status-name')
+      status.src = sprite
+      statusName.innerText = name
+      statusName.setAttribute('data-status-id', chainId)
+      statusName.setAttribute('data-status-name', name)
+    }
+
+
+function fillPokedexAllEvo() {
+  let collected = getStorage('pokemonEvolutionDataCollected')
+  let spriteStorage = getStorage('sprites')
+  if (collected.length !== 0) {
+    for (let i = 0; i < collected.length; i++) {
+      let name = collected[i].chain.species.name
+      let chainId = collected[i].id
+      // get sprite wanted from storage
+      let sprite = spriteStorage[i].sprite
+      // find pokedex number
+      let pokedexNumber = spriteStorage[i].pokedexNumber
+      // create and append image to pokedex spot
+      let spot = document.getElementsByClassName(`${pokedexNumber}`)
+      // console.log(spot.length)
+      for (let j = 0; j < spot.length; j++) {
+        spot[j].removeChild(spot[j].childNodes[0])
+        let pokeImg = document.createElement('img')
+        pokeImg.setAttribute('src', sprite)
+        pokeImg.classList.add('sprite')
+        pokeImg.setAttribute('data-chain-id', chainId)
+        pokeImg.classList.add('collected')
+        pokeImg.setAttribute('id', name)
+        spot[j].appendChild(pokeImg)
+      }
+    }
+  }
 }

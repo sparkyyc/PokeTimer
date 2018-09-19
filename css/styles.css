@@ -152,6 +152,7 @@ label {
   font-size: 50px;
   margin-top: 20px;
   margin-right: 20px;
+  margin-left: 20px;
   margin-bottom: 10px;
   cursor: pointer;
 }
@@ -193,6 +194,7 @@ label {
 .status-name {
   margin-right: 30%;
   padding-bottom: 20px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 @media screen and (max-width: 800px) {
