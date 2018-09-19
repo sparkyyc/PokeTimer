@@ -196,7 +196,8 @@ let createPokedex = function(whichGen, display, i) {
     childDiv.classList.add('column')
     childDiv.classList.add('is-one-third-mobile')
     // childDiv.classList.add('is-2')
-    childDiv.setAttribute('id', i)
+    // childDiv.setAttribute('id', i)
+    childDiv.classList.add(i)
     childDiv.classList.add('pokedex-entry')
     childDiv.classList.add('box')
     childDiv.classList.add('has-text-centered')
@@ -236,7 +237,6 @@ function getAllPokemon() {
   P.getPokemonsList(interval)
     .then(function(response) {
       // let allPokemon = parsePokedex(response)
-      console.log(response.results)
       setStorage('pokedexStorage', response.results)
     })
 
@@ -361,12 +361,14 @@ function fillPokedexRando() {
       // find pokedex number
       let pokedexNumber = response.id
       // create and append image to pokedex spot (may need to give html element class or id)
-      let spot = document.getElementById(`${pokedexNumber}`)
-      spot.removeChild(spot.childNodes[0])
-      let pokeImg = document.createElement('img')
-      pokeImg.setAttribute('src', sprite)
-      pokeImg.classList.add('sprite')
-      spot.appendChild(pokeImg)
+      let spot = document.getElementsByClassName(`${pokedexNumber}`)
+      for (let j = 0; j < spot.length; j++) {
+        spot[j].removeChild(spot[j].childNodes[0])
+        let pokeImg = document.createElement('img')
+        pokeImg.setAttribute('src', sprite)
+        pokeImg.classList.add('sprite')
+        spot[i].appendChild(pokeImg)
+      }
     })
 }
 
@@ -384,12 +386,14 @@ function fillPokedexCollected() {
           // find pokedex number
           let pokedexNumber = response.id
           // create and append image to pokedex spot (may need to give html element class or id)
-          let spot = document.getElementById(`${pokedexNumber}`)
-          spot.removeChild(spot.childNodes[0])
-          let pokeImg = document.createElement('img')
-          pokeImg.setAttribute('src', sprite)
-          pokeImg.classList.add('sprite')
-          spot.appendChild(pokeImg)
+          let spot = document.getElementsByClassName(`${pokedexNumber}`)
+          for (let j = 0; j < spot.length; j++) {
+            spot[j].removeChild(spot[j].childNodes[0])
+            let pokeImg = document.createElement('img')
+            pokeImg.setAttribute('src', sprite)
+            pokeImg.classList.add('sprite')
+            spot[j].appendChild(pokeImg)
+          }
         })
     }
   }
