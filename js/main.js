@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Get/set local storage
   loadStorage()
   fillPokedexCollected()
+
+  let picked = 'egg'
+  let chainNum
   // welcome message and instruction close and open
   let closeButton = document.getElementById('delete-button')
   let messages = document.getElementById('message-container')
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // set ticker object & duration to seconds
     let duration = timerAmount.value * 60
-    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay)
+    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked)
     // if button is start button
     if (timerButton.classList.contains('start-button')) {
       ticker.start()
@@ -91,17 +94,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  // Click on collected pokemon in pokedex
-  let picked;
+  // Click on collected or egg pokemon in pokedex
   let pokedex = document.getElementById('pokedex-section')
   let status = document.getElementById('adventure-status-image')
+  let statusName = document.getElementById('status-name')
   pokedex.addEventListener('click', (event) => {
     if (event.target.classList.contains('collected')) {
       status.src = event.target.src
       picked = event.target.id
+      chainNum = event.target.dataset.chainId
+      statusName.innerText = picked
     } else if ( event.target.classList.contains('egg')) {
       status.src = 'pokemon_Egg.png'
       picked = 'egg'
+      statusName.innerText = 'New Pokemon'
     }
   })
 
@@ -114,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // expected = date.now + interval
 // if time becomes off or drifts, do something
 // function with params what to do, how long, and what to do if there is an error(drift)
-function AdjustingTimer(doThisFunc, duration, display, errorFunc) {
+function AdjustingTimer(doThisFunc, duration, display, picked, chainId) {
   let that = this
   let expected
   let timeout
@@ -135,15 +141,21 @@ function AdjustingTimer(doThisFunc, duration, display, errorFunc) {
   // create a function to adjust interval in setTimeout and doThisFunc
   function step() {
     let drift = Date.now() - expected
-    if (drift > that.interval) {
-      if (errorFunc) erroFunc()
-    }
+    // if (drift > that.interval) {
+    //   if (errorFunc) erroFunc()
+    // }
     let countdownScreen = display
     doThisFunc(timer, countdownScreen)
     timer--
     if (timer < 0) {
-      randomPokemonGenerator()
-      return
+      if (picked === 'egg') {
+        randomPokemonGenerator()
+        return
+      } else {
+        evolve(chainId, picked)
+        return
+      }
+
     }
     expected += that.interval
     timeout = setTimeout(step, Math.max(0, that.interval - drift))
@@ -349,11 +361,11 @@ function randomPokemonGenerator() {
   let newPokemon = firstStage[pickedNumber]
   collectedEvos.push(newPokemon)
   setStorage('pokemonEvosCollected', collectedEvos)
-  parseEvolution(newPokemon, collected)
+  parseFound(newPokemon, collected)
 
 }
 
-function parseEvolution(newPokemon, collected) {
+function parseFound(newPokemon, collected) {
   axios.get(newPokemon.url)
     .then(function(response) {
       collected.push(response.data)
@@ -367,6 +379,7 @@ function fillPokedexRando() {
   // from pokemonCollected get name from last array element, obj.chain.species.name
   let collected = getStorage('pokemonCollected')
   let name = collected[collected.length - 1].chain.species.name
+  let chainId = collected[collected.length - 1].id
   // get pokemon using getpokemonbyname and name from above
   P.getPokemonByName(`${name}`)
     .then(function(response) {
@@ -381,9 +394,10 @@ function fillPokedexRando() {
         let pokeImg = document.createElement('img')
         pokeImg.setAttribute('src', sprite)
         pokeImg.classList.add('sprite')
+        pokeImg.setAttribute('data-chain-id', chaidId)
         pokeImg.classList.add('collected')
         pokeImg.setAttribute('id', name)
-        spot[i].appendChild(pokeImg)
+        spot[j].appendChild(pokeImg)
       }
     })
 }
@@ -394,6 +408,7 @@ function fillPokedexCollected() {
   if (collected.length !== 0) {
     for (let i = 0; i < collected.length; i++) {
       let name = collected[i].chain.species.name
+      let chainId = collected[i].id
       // get pokemon using getpokemonbyname and name from above
       P.getPokemonByName(`${name}`)
         .then(function(response) {
@@ -408,6 +423,7 @@ function fillPokedexCollected() {
             let pokeImg = document.createElement('img')
             pokeImg.setAttribute('src', sprite)
             pokeImg.classList.add('sprite')
+            pokeImg.setAttribute('data-chain-id', chainId)
             pokeImg.classList.add('collected')
             pokeImg.setAttribute('id', name)
             spot[j].appendChild(pokeImg)
@@ -418,6 +434,34 @@ function fillPokedexCollected() {
 }
 
 // evolve - what to do when
-function evolve() {
-  //
+function evolve(chainNum, picked) {
+  let evolution
+  // check if pokemon evolution is already collected
+
+  // get evolution chain
+
+  // for each
+  // if name key of array [0] is pokemon picked, set evolution to array[1] name
+  P.getEvolutionChainById(chainNum)
+    .then(function(response) {
+      if (response.chain.species.name === picked) {
+        console.log(`it's the first stage`)
+      } else 
+    })
+  // else if name key of array[1] is pokemon picked, set evolution to array[2] name etc.
+
+  // get pokemon from main pokemon list
+  // push into collected
+  // set collected
+
+  // parseEvolution(evolution, collected)
+}
+
+function parseEvolution(evolve, collected) {
+  axios.get(evolve.url)
+    .then(function(response) {
+      console.log(response.data)
+      // collected.push(response.data)
+      // setStorage('pokemonCollected', collected)
+    })
 }
