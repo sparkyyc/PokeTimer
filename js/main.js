@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Get/set local storage
   loadStorage()
+  fillPokedexCollected()
   // welcome message and instruction close and open
   let closeButton = document.getElementById('delete-button')
   let messages = document.getElementById('message-container')
@@ -90,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  fillPokedexRando()
 })
 
 
@@ -312,7 +312,7 @@ function randomNumber() {
 }
 // function to check object equality
 function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
-  if(collectedArr.length !== 0) {
+  if (collectedArr.length !== 0) {
     return false
   }
   for (let i = 0; i < collectedArr.length; i++) {
@@ -335,14 +335,16 @@ function randomPokemonGenerator() {
   collectedEvos.push(newPokemon)
   setStorage('pokemonEvosCollected', collectedEvos)
   parseEvolution(newPokemon, collected)
+
 }
 
 function parseEvolution(newPokemon, collected) {
   axios.get(newPokemon.url)
-  .then(function (response) {
-    collected.push(response.data)
-    setStorage('pokemonCollected', collected)
-  })
+    .then(function(response) {
+      collected.push(response.data)
+      setStorage('pokemonCollected', collected)
+      fillPokedexRando()
+    })
 }
 
 // function to append sprite to pokedex
@@ -364,5 +366,30 @@ function fillPokedexRando() {
       let pokeImg = document.createElement('img')
       pokeImg.setAttribute('src', sprite)
       spot.appendChild(pokeImg)
-    });
+    })
+}
+
+function fillPokedexCollected() {
+  // from pokemonCollected get name from last array element, obj.chain.species.name
+  let collected = getStorage('pokemonCollected')
+  if (collected.length !== 0) {
+    for (let i = 0; i < collected.length; i++) {
+      let name = collected[i].chain.species.name
+      // get pokemon using getpokemonbyname and name from above
+      P.getPokemonByName(`${name}`)
+        .then(function(response) {
+          console.log(response)
+          // get sprite wanted from that response
+          let sprite = response.sprites.front_default
+          // find pokedex number
+          let pokedexNumber = response.id
+          // create and append image to pokedex spot (may need to give html element class or id)
+          let spot = document.getElementById(`${pokedexNumber}`)
+          spot.removeChild(spot.childNodes[0])
+          let pokeImg = document.createElement('img')
+          pokeImg.setAttribute('src', sprite)
+          spot.appendChild(pokeImg)
+        })
+    }
+  }
 }
