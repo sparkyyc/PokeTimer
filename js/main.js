@@ -152,11 +152,16 @@ function AdjustingTimer(doThisFunc, duration, display, picked, chainNum) {
     if (timer < 0) {
       if (picked === 'egg') {
         randomPokemonGenerator()
-        return
+
       } else {
         evolve(chainNum, picked)
-        return
+
       }
+      let timerButton = document.getElementById('timer-button')
+      timerButton.classList.remove('stop-button')
+      timerButton.classList.add('start-button')
+      timerButton.value = 'Start'
+      return
 
     }
     expected += that.interval
@@ -333,10 +338,10 @@ function loadStorage() {
   if (!getStorage('pokemonEvosCollected')) {
     setStorage('pokemonEvosCollected', [])
   }
-  if (!getStorage('pokemonEvolutionDataCollected')){
+  if (!getStorage('pokemonEvolutionDataCollected')) {
     setStorage('pokemonEvolutionDataCollected', [])
   }
-  if (!getStorage('sprites')){
+  if (!getStorage('sprites')) {
     setStorage('sprites', [])
   }
 }
@@ -359,6 +364,7 @@ function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
 }
 // function to get random pokemon
 function randomPokemonGenerator() {
+  console.log('Getting encounter')
   let firstStage = getStorage('evolutionStorage')
   let collectedEvos = getStorage('pokemonEvosCollected')
   let collected = getStorage('pokemonCollected')
@@ -396,7 +402,6 @@ function fillPokedexRando() {
       let sprite = response.sprites.front_default
       // find pokedex number
       let pokedexNumber = response.id
-      console.log(pokedexNumber)
       // create and append image to pokedex spot (may need to give html element class or id)
       let spot = document.getElementsByClassName(`${pokedexNumber}`)
       // console.log(spot)
@@ -428,26 +433,23 @@ function fillPokedexCollected() {
     for (let i = 0; i < collected.length; i++) {
       let name = collected[i].chain.species.name
       let chainId = collected[i].id
-          // get sprite wanted from storage
-          let sprite = spriteStorage[i].sprite
-          console.log(sprite)
-          // find pokedex number
-          let pokedexNumber = spriteStorage[i].pokedexNumber
-          console.log(pokedexNumber)
-          // create and append image to pokedex spot
-          let spot = document.getElementsByClassName(`${pokedexNumber}`)
-          console.log(spot)
-          // console.log(spot.length)
-          for (let j = 0; j < spot.length; j++) {
-            spot[j].removeChild(spot[j].childNodes[0])
-            let pokeImg = document.createElement('img')
-            pokeImg.setAttribute('src', sprite)
-            pokeImg.classList.add('sprite')
-            pokeImg.setAttribute('data-chain-id', chainId)
-            pokeImg.classList.add('collected')
-            pokeImg.setAttribute('id', name)
-            spot[j].appendChild(pokeImg)
-          }
+      // get sprite wanted from storage
+      let sprite = spriteStorage[i].sprite
+      // find pokedex number
+      let pokedexNumber = spriteStorage[i].pokedexNumber
+      // create and append image to pokedex spot
+      let spot = document.getElementsByClassName(`${pokedexNumber}`)
+      // console.log(spot.length)
+      for (let j = 0; j < spot.length; j++) {
+        spot[j].removeChild(spot[j].childNodes[0])
+        let pokeImg = document.createElement('img')
+        pokeImg.setAttribute('src', sprite)
+        pokeImg.classList.add('sprite')
+        pokeImg.setAttribute('data-chain-id', chainId)
+        pokeImg.classList.add('collected')
+        pokeImg.setAttribute('id', name)
+        spot[j].appendChild(pokeImg)
+      }
     }
   }
 }
@@ -516,4 +518,4 @@ function parseEvolution(evolve, collectedEvos) {
       setStorage('pokemonEvolutionDataCollected', collectedEvos)
       fillPokedexRando()
     })
-    }
+}
