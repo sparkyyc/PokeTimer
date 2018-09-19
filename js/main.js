@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Get/set local storage
   loadStorage()
-  fillPokedexCollected()
+
 
   let picked = 'egg'
   let chainNum
@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
   createPokedex(gen1Total, gen1Display, 0)
   createPokedex(gen2Total, gen2Display, gen1Total)
   createPokedex(gen3Total, gen3Display, gen2Total)
+
+  fillPokedexCollected()
   // pokedex tabs
   let allTabContent = document.getElementsByClassName('tab-content')
   let allTabs = document.querySelector('tabs')
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // set ticker object & duration to seconds
     let duration = timerAmount.value * 60
-    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked)
+    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked, chainNum)
     // if button is start button
     if (timerButton.classList.contains('start-button')) {
       ticker.start()
@@ -104,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       picked = event.target.id
       chainNum = event.target.dataset.chainId
       statusName.innerText = picked
-    } else if ( event.target.classList.contains('egg')) {
+    } else if (event.target.classList.contains('egg')) {
       status.src = 'pokemon_Egg.png'
       picked = 'egg'
       statusName.innerText = 'New Pokemon'
@@ -120,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // expected = date.now + interval
 // if time becomes off or drifts, do something
 // function with params what to do, how long, and what to do if there is an error(drift)
-function AdjustingTimer(doThisFunc, duration, display, picked, chainId) {
+function AdjustingTimer(doThisFunc, duration, display, picked, chainNum) {
   let that = this
   let expected
   let timeout
@@ -152,7 +154,7 @@ function AdjustingTimer(doThisFunc, duration, display, picked, chainId) {
         randomPokemonGenerator()
         return
       } else {
-        evolve(chainId, picked)
+        evolve(chainNum, picked)
         return
       }
 
@@ -331,6 +333,12 @@ function loadStorage() {
   if (!getStorage('pokemonEvosCollected')) {
     setStorage('pokemonEvosCollected', [])
   }
+  if (!getStorage('pokemonEvolutionDataCollected')){
+    setStorage('pokemonEvolutionDataCollected', [])
+  }
+  if (!getStorage('sprites')){
+    setStorage('sprites', [])
+  }
 }
 
 // function to get random number
@@ -380,6 +388,7 @@ function fillPokedexRando() {
   let collected = getStorage('pokemonCollected')
   let name = collected[collected.length - 1].chain.species.name
   let chainId = collected[collected.length - 1].id
+  let spritesStorage = getStorage('sprites')
   // get pokemon using getpokemonbyname and name from above
   P.getPokemonByName(`${name}`)
     .then(function(response) {
@@ -387,37 +396,48 @@ function fillPokedexRando() {
       let sprite = response.sprites.front_default
       // find pokedex number
       let pokedexNumber = response.id
+      console.log(pokedexNumber)
       // create and append image to pokedex spot (may need to give html element class or id)
       let spot = document.getElementsByClassName(`${pokedexNumber}`)
+      // console.log(spot)
+      // console.log(spot.length)
       for (let j = 0; j < spot.length; j++) {
         spot[j].removeChild(spot[j].childNodes[0])
         let pokeImg = document.createElement('img')
         pokeImg.setAttribute('src', sprite)
         pokeImg.classList.add('sprite')
-        pokeImg.setAttribute('data-chain-id', chaidId)
+        pokeImg.setAttribute('data-chain-id', chainId)
         pokeImg.classList.add('collected')
         pokeImg.setAttribute('id', name)
         spot[j].appendChild(pokeImg)
       }
+      let spriteObj = {
+        sprite: sprite,
+        pokedexNumber: pokedexNumber,
+      }
+      spritesStorage.push(spriteObj)
+      setStorage('sprites', spritesStorage)
     })
 }
 
 function fillPokedexCollected() {
   // from pokemonCollected get name from last array element, obj.chain.species.name
   let collected = getStorage('pokemonCollected')
+  let spriteStorage = getStorage('sprites')
   if (collected.length !== 0) {
     for (let i = 0; i < collected.length; i++) {
       let name = collected[i].chain.species.name
       let chainId = collected[i].id
-      // get pokemon using getpokemonbyname and name from above
-      P.getPokemonByName(`${name}`)
-        .then(function(response) {
-          // get sprite wanted from that response
-          let sprite = response.sprites.front_default
+          // get sprite wanted from storage
+          let sprite = spriteStorage[i].sprite
+          console.log(sprite)
           // find pokedex number
-          let pokedexNumber = response.id
-          // create and append image to pokedex spot (may need to give html element class or id)
+          let pokedexNumber = spriteStorage[i].pokedexNumber
+          console.log(pokedexNumber)
+          // create and append image to pokedex spot
           let spot = document.getElementsByClassName(`${pokedexNumber}`)
+          console.log(spot)
+          // console.log(spot.length)
           for (let j = 0; j < spot.length; j++) {
             spot[j].removeChild(spot[j].childNodes[0])
             let pokeImg = document.createElement('img')
@@ -428,7 +448,6 @@ function fillPokedexCollected() {
             pokeImg.setAttribute('id', name)
             spot[j].appendChild(pokeImg)
           }
-        })
     }
   }
 }
@@ -436,32 +455,65 @@ function fillPokedexCollected() {
 // evolve - what to do when
 function evolve(chainNum, picked) {
   let evolution
+  let collectedEvos = getStorage('pokemonEvolutionDataCollected')
+  let collected = getStorage('pokemonCollected')
+  let chainPicked
+  chainNum = parseInt(chainNum, 10)
   // check if pokemon evolution is already collected
-
   // get evolution chain
-
+  for (let i = 0; i < collected.length; i++) {
+    if (collected[i].id === chainNum) {
+      chainPicked = collected[i]
+    }
+  }
   // for each
   // if name key of array [0] is pokemon picked, set evolution to array[1] name
-  P.getEvolutionChainById(chainNum)
-    .then(function(response) {
-      if (response.chain.species.name === picked) {
-        console.log(`it's the first stage`)
-      } else 
-    })
+  console.log(chainPicked.chain.species.name)
+  if (chainPicked.chain.species.name === picked) {
+    if (chainPicked.chain.evolves_to[0].species.name !== []) {
+      evolution = chainPicked.chain.evolves_to[0].species.name
+      console.log(evolution)
+    } else {
+      console.log('this pokemon has no more evolutions')
+    }
+    console.log(`it's the first stage`)
+  } else if (chainPicked.chain.evolves_to[0].species.name === picked) {
+    if (chainPicked.chain.evolves_to[0].evolves_to[0].species.name !== []) {
+      evolution = chainPicked.chain.evolves_to[0].evolves_to[0].species.name
+      console.log(evolution)
+    } else {
+      console.log('this pokemon has no more evolutions')
+    }
+    console.log(`it's the second stage`)
+  } else if (chainPicked.chain.evolves_to[0].evolves_to[0].species.name === picked) {
+    if (chainPicked.chain.evolves_to[0].evolves_to[0].evolves_to[0].species.name !== []) {
+      evolution = chainPicked.chain.evolves_to[0].evolves_to[0].evolves_to[0].species.name
+      console.log(evolution)
+    } else {
+      console.log('this pokemon has no more evolutions')
+    }
+    console.log(`it's the third stage`)
+  } else if (chainPicked.chain.evolves_to[0].evolves_to[0].evolves_to[0].species.name === picked) {
+    console.log(`it's the fourth stage, pretty sure these don't have anymore evolutions`)
+  } else {
+    console.log(`Error`)
+  }
+  // })
   // else if name key of array[1] is pokemon picked, set evolution to array[2] name etc.
 
   // get pokemon from main pokemon list
+  parseEvolution(evolution, collectedEvos)
   // push into collected
   // set collected
 
   // parseEvolution(evolution, collected)
 }
 
-function parseEvolution(evolve, collected) {
-  axios.get(evolve.url)
+function parseEvolution(evolve, collectedEvos) {
+  P.getPokemonByName(evolve)
     .then(function(response) {
-      console.log(response.data)
-      // collected.push(response.data)
-      // setStorage('pokemonCollected', collected)
+      collectedEvos.push(response)
+      setStorage('pokemonEvolutionDataCollected', collectedEvos)
+      fillPokedexRando()
     })
-}
+    }
