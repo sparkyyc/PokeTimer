@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-
+  fillPokedexRando()
 })
 
 
@@ -195,6 +195,7 @@ let createPokedex = function(whichGen, display, i) {
     childDiv.classList.add('column')
     childDiv.classList.add('is-one-third-mobile')
     // childDiv.classList.add('is-2')
+    childDiv.setAttribute('id', i)
     childDiv.classList.add('pokedex-entry')
     childDiv.classList.add('box')
     childDiv.classList.add('has-text-centered')
@@ -330,9 +331,7 @@ function randomPokemonGenerator() {
   while (checkObjectEquality(collectedEvos, firstStage, pickedNumber)) {
     pickedNumber = randomNumber()
   }
-  console.log(firstStage)
   let newPokemon = firstStage[pickedNumber]
-  console.log(newPokemon)
   collectedEvos.push(newPokemon)
   setStorage('pokemonEvosCollected', collectedEvos)
   parseEvolution(newPokemon, collected)
@@ -341,8 +340,29 @@ function randomPokemonGenerator() {
 function parseEvolution(newPokemon, collected) {
   axios.get(newPokemon.url)
   .then(function (response) {
-    console.log(response.data)
     collected.push(response.data)
     setStorage('pokemonCollected', collected)
   })
+}
+
+// function to append sprite to pokedex
+function fillPokedexRando() {
+  // from pokemonCollected get name from last array element, obj.chain.species.name
+  let collected = getStorage('pokemonCollected')
+  let name = collected[collected.length - 1].chain.species.name
+  // get pokemon using getpokemonbyname and name from above
+  P.getPokemonByName(`${name}`)
+    .then(function(response) {
+      console.log(response)
+      // get sprite wanted from that response
+      let sprite = response.sprites.front_default
+      // find pokedex number
+      let pokedexNumber = response.id
+      // create and append image to pokedex spot (may need to give html element class or id)
+      let spot = document.getElementById(`${pokedexNumber}`)
+      spot.removeChild(spot.childNodes[0])
+      let pokeImg = document.createElement('img')
+      pokeImg.setAttribute('src', sprite)
+      spot.appendChild(pokeImg)
+    });
 }
