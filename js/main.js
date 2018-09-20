@@ -83,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // get timer input & convert it
     else if (timerAmount.value === '') {
+      document.getElementById("timer-amount").focus()
+      let errorImage = document.getElementById('adventure-status-image')
+      let errorMessage = document.getElementById('status-name')
+      errorImage.src = "https://cdn.vox-cdn.com/thumbor/vd0xeeKgRvzDI8HirSqC0UrOftQ=/0x0:729x517/1200x800/filters:focal(246x345:362x461)/cdn.vox-cdn.com/uploads/chorus_image/image/52916683/Screen_Shot_2017_01_25_at_1.27.36_PM.0.png"
+      errorMessage.innerText = "Please set timer amount!"
       return console.log('Error')
     }
 
