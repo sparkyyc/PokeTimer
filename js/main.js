@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createPokedex(gen3Total, gen3Display, gen2Total)
 
   fillPokedexCollected()
+  fillPokedexAllEvo()
   // pokedex tabs
   let allTabContent = document.getElementsByClassName('tab-content')
   let allTabs = document.querySelector('tabs')
@@ -115,12 +116,24 @@ document.addEventListener('DOMContentLoaded', () => {
       statusName.innerText = picked
       statusName.setAttribute('data-status-id', chainNum)
       statusName.setAttribute('data-status-name', picked)
+
+      let lastActive = pokedex.getElementsByClassName('active')
+      for (let i = 0; i < lastActive.length; i++) {
+        lastActive[i].classList.remove('active')
+      }
+      event.target.classList.add('active')
     } else if (event.target.classList.contains('egg')) {
-      status.src = 'pokemon_Egg.png'
+      status.src = "https://vignette.wikia.nocookie.net/fantendo/images/b/bf/Pokemon_Egg.png/revision/latest?cb=20161106162613"
       picked = 'egg'
       statusName.innerText = 'New Pokemon'
-      statusName.setAttribute('data-status-id', chainNum)
+      // statusName.setAttribute('data-status-id', chainNum)
       statusName.setAttribute('data-status-name', 'egg')
+
+      let lastActive = pokedex.getElementsByClassName('active')
+      for (let i = 0; i < lastActive.length; i++) {
+        lastActive[i].classList.remove('active')
+      }
+      event.target.classList.add('active')
     }
   })
 
@@ -165,14 +178,31 @@ function AdjustingTimer(doThisFunc, duration, display, picked, chainNum) {
     if (timer < 0) {
       console.log(picked)
       if (picked === 'egg') {
-        randomPokemonGenerator(picked, chainNum)
+        try {
+          randomPokemonGenerator(picked, chainNum)
+        } catch (oops) {
+          console.log(oops)
+          let errorImage = document.getElementById('adventure-status-image')
+          errorImage.src = "http://elaccki.weebly.com/uploads/8/9/4/8/8948680/8705065_orig.png"
+        }
       } else {
-        evolve(chainNum, picked)
+        try {
+          evolve(chainNum, picked)
+        } catch (oops) {
+          console.log(oops)
+          let errorImage = document.getElementById('adventure-status-image')
+          errorImage.src = "http://elaccki.weebly.com/uploads/8/9/4/8/8948680/8705065_orig.png"
+        }
       }
       let timerButton = document.getElementById('timer-button')
       timerButton.classList.remove('stop-button')
       timerButton.classList.add('start-button')
       timerButton.value = 'Start'
+
+      let lastActive = document.getElementsByClassName('active')
+      for (let i = 0; i < lastActive.length; i++) {
+        lastActive[i].classList.remove('active')
+      }
 
       return
     }
@@ -221,6 +251,7 @@ let createPokedex = function(whichGen, display, i) {
   eggChild.classList.add('box')
   eggChild.classList.add('has-text-centered')
   eggChild.classList.add('is-one-third-mobile')
+  eggChild.classList.add('active')
   // append child egg div to ancestor
   ancestor.appendChild(eggChild)
   // create div for egg
@@ -260,7 +291,6 @@ let createPokedex = function(whichGen, display, i) {
 // pokedex tabs
 function closeTab() {
   let allTabContent = document.getElementsByClassName('tab-content')
-  console.log(allTabContent)
   for (let i = 0; i < allTabContent.length; i++) {
     allTabContent[i].classList.remove('current')
   }
@@ -268,7 +298,6 @@ function closeTab() {
 
 function removeActive() {
   let allTabs = document.getElementsByClassName('tab')
-  console.log(allTabs)
   for (let i = 0; i < allTabs.length; i++) {
     allTabs[i].classList.remove('is-active')
   }
@@ -356,6 +385,9 @@ function loadStorage() {
   if (!getStorage('sprites')) {
     setStorage('sprites', [])
   }
+  if (!getStorage('evoSprites')) {
+    setStorage('evoSprites', [])
+  }
 }
 
 // function to get random number
@@ -368,6 +400,7 @@ function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
     return false
   }
   for (let i = 0; i < collectedArr.length; i++) {
+    console.log(collected[i].url, firstStage[pickedNumber].url)
     if (collectedArr[i].url === firstStage[pickedNumber].url) {
       return true
     }
@@ -391,13 +424,17 @@ function randomPokemonGenerator(picked, chainNum) {
 }
 
 function parseFound(newPokemon, collected, picked ,chainNum) {
-  axios.get(newPokemon.url)
-    .then(function(response) {
-      collected.push(response.data)
-      setStorage('pokemonCollected', collected)
-      fillPokedexRando(picked, chainNum)
-    })
-    return picked, chainNum
+  try {
+    axios.get(newPokemon.url)
+      .then(function(response) {
+        collected.push(response.data)
+        setStorage('pokemonCollected', collected)
+        fillPokedexRando(picked, chainNum)
+      })
+      return picked, chainNum
+  } catch(error) {
+    console.log('error')
+  }
 }
 
 // function to append sprite to pokedex
@@ -493,7 +530,7 @@ function evolve(chainNum, picked) {
   }
   // for each
   // if name key of array [0] is pokemon picked, set evolution to array[1] name
-  console.log(chainPicked.chain.species.name)
+  console.log(chainPicked)
   if (chainPicked.chain.species.name === picked) {
     if (chainPicked.chain.evolves_to[0].species.name !== []) {
       evolution = chainPicked.chain.evolves_to[0].species.name
@@ -527,20 +564,22 @@ function evolve(chainNum, picked) {
   // else if name key of array[1] is pokemon picked, set evolution to array[2] name etc.
 
   // get pokemon from main pokemon list
-  parseEvolution(evolution, collectedEvos)
+  console.log(chainNum)
+  parseEvolution(evolution, collectedEvos, chainNum)
   // push into collected
   // set collected
 
   // parseEvolution(evolution, collected)
 }
 
-function parseEvolution(evolve, collectedEvos) {
+function parseEvolution(evolve, collectedEvos, chainNum) {
   P.getPokemonByName(evolve)
     .then(function(response) {
       collectedEvos.push(response)
       // console.log(collectedEvos)
       setStorage('pokemonEvolutionDataCollected', collectedEvos)
-      fillPokedexEvo()
+      console.log(chainNum)
+      fillPokedexEvo(chainNum)
     })
 }
 
@@ -549,15 +588,17 @@ function fillPokedexEvo(picked, chainNum) {
   // get pokemon using getpokemonbyname and name from above
 
   let collected = getStorage('pokemonCollected')
-  let spriteStorage = getStorage('sprites')
+  let spriteStorage = getStorage('evoSprites')
   let evolutionData = getStorage('pokemonEvolutionDataCollected')
+  let collectedChain = getStorage('pokemonCollected')
 
-      let name = evolutionData.name
-      let chainId = chainNum
+      let name = evolutionData[evolutionData.length - 1].name
+      let chainId = collectedChain[collectedChain.length - 1].id
+      console.log(chainId)
       // get sprite wanted from storage
       let sprite = evolutionData[evolutionData.length -1].sprites.front_default
       // find pokedex number
-      let pokedexNumber =evolutionData[evolutionData.length -1].id
+      let pokedexNumber = evolutionData[evolutionData.length -1].id
       // create and append image to pokedex spot
       let spot = document.getElementsByClassName(`${pokedexNumber}`)
       // console.log(spot.length)
@@ -574,10 +615,12 @@ function fillPokedexEvo(picked, chainNum) {
       let spriteObj = {
         sprite: sprite,
         pokedexNumber: pokedexNumber,
+        chainNumber: chainId,
       }
 
-      spritesStorage.push(spriteObj)
-      setStorage('sprites', spritesStorage)
+      spriteStorage.push(spriteObj)
+      // setStorage('sprites', spriteStorage)
+      setStorage('evoSprites', spriteStorage)
 
       let status = document.getElementById('adventure-status-image')
       let statusName = document.getElementById('status-name')
@@ -588,19 +631,26 @@ function fillPokedexEvo(picked, chainNum) {
     }
 
 
-function fillPokedexAllEvo() {
+function fillPokedexAllEvo(chainNum) {
   let collected = getStorage('pokemonEvolutionDataCollected')
-  let spriteStorage = getStorage('sprites')
+  // let collectedChain = getStorage('pokemonCollected')
+  let spriteStorage = getStorage('evoSprites')
   if (collected.length !== 0) {
     for (let i = 0; i < collected.length; i++) {
-      let name = collected[i].chain.species.name
-      let chainId = collected[i].id
+      let name = collected[i].species.name
+      console.log('name: ', name)
+
+      let chainId = spriteStorage[i].chainNumber
+      console.log('id: ', chainId)
       // get sprite wanted from storage
       let sprite = spriteStorage[i].sprite
+      console.log('sprite: ', sprite)
       // find pokedex number
       let pokedexNumber = spriteStorage[i].pokedexNumber
+      console.log('pokedex number: ', pokedexNumber)
       // create and append image to pokedex spot
       let spot = document.getElementsByClassName(`${pokedexNumber}`)
+      console.log(spot)
       // console.log(spot.length)
       for (let j = 0; j < spot.length; j++) {
         spot[j].removeChild(spot[j].childNodes[0])

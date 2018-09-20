@@ -66,7 +66,7 @@
           <div>
             <h1 class="has-text-centered countdown" id="countdown-display">00:00</h1>
             <div class="has-text-centered">
-              <label for="timer-input">Timer amount:</label>
+              <label for="timer-input">Timer minutes:</label>
               <input type="number" id="timer-amount" name="timer-input"
                      placeholder="5"
                      min="1" max="60" required />
@@ -79,7 +79,7 @@
         <div class="column is-one-third">
           <figure class="image is-200x200 adventure-status">
             <p class="has-text-centered status-name" id="status-name" data-status-id="" data-status-name="egg">New Pokemon</p>
-            <img src="pokemon_Egg.png" class="adventure-status-image" id="adventure-status-image"><br>
+            <img src="https://vignette.wikia.nocookie.net/fantendo/images/b/bf/Pokemon_Egg.png/revision/latest?cb=20161106162613" class="adventure-status-image" id="adventure-status-image"><br>
             <progress class="progress is-primary hide" value="15" max="60"></progress>
           </figure>
 
@@ -147,7 +147,8 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/pokeapi-js-wrapper/dist/index.js"></script>
 <script> const options = {
-  protocol: 'https',
+  protocol: 'http',
+  hostName: "localhost:8000",
   versionPath: '/api/v2/',
   cache: true,
   timeout: 5 * 1000 // 5s
