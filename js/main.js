@@ -396,11 +396,11 @@ function randomNumber() {
 }
 // function to check object equality
 function checkObjectEquality(collectedArr, firstStage, pickedNumber) {
-  if (collectedArr.length !== 0) {
+  console.log('checking if you have it')
+  if (collectedArr.length === 0) {
     return false
   }
   for (let i = 0; i < collectedArr.length; i++) {
-    console.log(collected[i].url, firstStage[pickedNumber].url)
     if (collectedArr[i].url === firstStage[pickedNumber].url) {
       return true
     }
@@ -414,6 +414,7 @@ function randomPokemonGenerator(picked, chainNum) {
   let collectedEvos = getStorage('pokemonEvosCollected')
   let collected = getStorage('pokemonCollected')
   let pickedNumber = randomNumber()
+  console.log(firstStage[pickedNumber])
   while (checkObjectEquality(collectedEvos, firstStage, pickedNumber)) {
     pickedNumber = randomNumber()
   }
