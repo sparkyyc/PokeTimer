@@ -90,13 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMessage.innerText = "Please set timer amount!"
       return console.log('Error')
     }
-
     let statusInfo = document.getElementById('status-name')
     picked = statusInfo.dataset.statusName
     chainNum =  statusInfo.dataset.statusId
+    let lastChain = statusInfo.dataset.statusId
     // set ticker object & duration to seconds
     let duration = timerAmount.value * 60
-    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked, chainNum)
+    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked, chainNum, lastChain)
     // if button is start button
     if (timerButton.classList.contains('start-button')) {
 
@@ -192,11 +192,12 @@ function AdjustingTimer(doThisFunc, duration, display, picked, chainNum) {
         }
       } else {
         try {
-          evolve(chainNum, picked)
+          evolve(chainNum, picked, lastChain)
         } catch (oops) {
-          console.log(oops)
-          let errorImage = document.getElementById('adventure-status-image')
-          errorImage.src = "http://elaccki.weebly.com/uploads/8/9/4/8/8948680/8705065_orig.png"
+          console.log(oops,'something went wrong or no more evolutions. Attempting to find new pokemon for you.')
+          // let errorImage = document.getElementById('adventure-status-image')
+          // errorImage.src = "http://elaccki.weebly.com/uploads/8/9/4/8/8948680/8705065_orig.png"
+          randomPokemonGenerator()
         }
       }
       let timerButton = document.getElementById('timer-button')
@@ -500,6 +501,7 @@ function fillPokedexCollected() {
       let name = collected[i].chain.species.name
       let chainId = collected[i].id
       // get sprite wanted from storage
+
       let sprite = spriteStorage[i].sprite
       // find pokedex number
       let pokedexNumber = spriteStorage[i].pokedexNumber
@@ -521,7 +523,7 @@ function fillPokedexCollected() {
 }
 
 // evolve - what to do when
-function evolve(chainNum, picked) {
+function evolve(chainNum, picked, lastChain) {
   let evolution
   let collectedEvos = getStorage('pokemonEvolutionDataCollected')
   let collected = getStorage('pokemonCollected')
@@ -536,7 +538,7 @@ function evolve(chainNum, picked) {
   }
   // for each
   // if name key of array [0] is pokemon picked, set evolution to array[1] name
-  console.log(chainPicked)
+  console.log('chain picked: ', chainPicked)
   if (chainPicked.chain.species.name === picked) {
     if (chainPicked.chain.evolves_to[0].species.name !== []) {
       evolution = chainPicked.chain.evolves_to[0].species.name
@@ -544,7 +546,7 @@ function evolve(chainNum, picked) {
     } else {
       console.log('this pokemon has no more evolutions')
     }
-    console.log(`it's the first stage`)
+    console.log(`it's the unevolved stage`)
   } else if (chainPicked.chain.evolves_to[0].species.name === picked) {
     if (chainPicked.chain.evolves_to[0].evolves_to[0].species.name !== []) {
       evolution = chainPicked.chain.evolves_to[0].evolves_to[0].species.name
@@ -552,7 +554,7 @@ function evolve(chainNum, picked) {
     } else {
       console.log('this pokemon has no more evolutions')
     }
-    console.log(`it's the second stage`)
+    console.log(`it's the first stage`)
   } else if (chainPicked.chain.evolves_to[0].evolves_to[0].species.name === picked) {
     if (chainPicked.chain.evolves_to[0].evolves_to[0].evolves_to[0].species.name !== []) {
       evolution = chainPicked.chain.evolves_to[0].evolves_to[0].evolves_to[0].species.name
@@ -561,9 +563,7 @@ function evolve(chainNum, picked) {
       console.log('this pokemon has no more evolutions')
     }
     console.log(`it's the third stage`)
-  } else if (chainPicked.chain.evolves_to[0].evolves_to[0].evolves_to[0].species.name === picked) {
-    console.log(`it's the fourth stage, pretty sure these don't have anymore evolutions`)
-  } else {
+  }  else {
     console.log(`Error`)
   }
   // })
@@ -600,7 +600,7 @@ function fillPokedexEvo(picked, chainNum) {
 
       let name = evolutionData[evolutionData.length - 1].name
       let chainId = collectedChain[collectedChain.length - 1].id
-      console.log(chainId)
+      console.log('chain Id: ', chainId)
       // get sprite wanted from storage
       let sprite = evolutionData[evolutionData.length -1].sprites.front_default
       // find pokedex number
