@@ -93,10 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let statusInfo = document.getElementById('status-name')
     picked = statusInfo.dataset.statusName
     chainNum =  statusInfo.dataset.statusId
-    let lastChain = statusInfo.dataset.statusId
     // set ticker object & duration to seconds
     let duration = timerAmount.value * 60
-    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked, chainNum, lastChain)
+    ticker = new AdjustingTimer(appendTimer, duration, countdownDisplay, picked, chainNum)
     // if button is start button
     if (timerButton.classList.contains('start-button')) {
 
@@ -192,7 +191,7 @@ function AdjustingTimer(doThisFunc, duration, display, picked, chainNum) {
         }
       } else {
         try {
-          evolve(chainNum, picked, lastChain)
+          evolve(chainNum, picked)
         } catch (oops) {
           console.log(oops,'something went wrong or no more evolutions. Attempting to find new pokemon for you.')
           // let errorImage = document.getElementById('adventure-status-image')
@@ -523,7 +522,7 @@ function fillPokedexCollected() {
 }
 
 // evolve - what to do when
-function evolve(chainNum, picked, lastChain) {
+function evolve(chainNum, picked) {
   let evolution
   let collectedEvos = getStorage('pokemonEvolutionDataCollected')
   let collected = getStorage('pokemonCollected')
