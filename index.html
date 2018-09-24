@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PokeTimer</title>
+  <title>PokéTimer</title>
   <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro:400,400i,700|Press+Start+2P" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
@@ -30,7 +30,7 @@
       </nav>
       <div class="container">
         <h1 class="title main-header has-text-centered">
-            Poke Timer
+            Poké Timer
             </h1>
       </div>
 
@@ -68,7 +68,7 @@
             <div class="has-text-centered">
               <label for="timer-input">Timer minutes:</label>
               <input type="number" id="timer-amount" name="timer-input"
-                     min="1" max="60" required />
+                     min="3" max="60" required />
             </div>
             <div class="has-text-centered">
               <input type="button" value="Start" class="button start-button" id="timer-button" />
@@ -146,8 +146,8 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/pokeapi-js-wrapper/dist/index.js"></script>
 <script> const options = {
-  protocol: 'http',
-  hostName: "localhost:8000",
+  protocol: 'https',
+  hostName: "pokeapi.co",
   versionPath: '/api/v2/',
   cache: true,
   timeout: 5 * 1000 // 5s
